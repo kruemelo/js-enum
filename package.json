@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "javascript enum",
   "main": "enum.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kruemelo/js-enum.git"
+  },
   "scripts": {
     "test": "mocha"
   },
