@@ -97,7 +97,7 @@ define([], function () {
         value: elements[el],
         enumerable: true
       });
-    };
+    }
 
     (Object.freeze || Object)(enumeration);
 

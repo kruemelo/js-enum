@@ -1,7 +1,20 @@
 js-enum
 =======
 
-javascript enumerations
+simple javascript enumerations, AMD module.
+
+Enumerations with immutable elements.
+
+Supports numeric element values as well as user defined element values.
+
+Tested with mocha, available at npm, MIT licensed.
+
+Install
+-------
+$ npm install js-enum
+
+Use
+---
 
 ```
 var Enum = require('enum.js');
@@ -16,6 +29,10 @@ var appState = appStateEnum.set(appStateEnum.LOADED);
 -> 0x1 (appStateEnum.LOADED)
 
 appState = appStateEnum.set(appState, [appStateEnum.STARTED, appStateEnum.RESUMED]);
+-> 0x7 (appStateEnum.LOADED, appStateEnum.STARTED, appStateEnum.RESUMED)
+
+// or
+appState = appStateEnum.set([appState, appStateEnum.STARTED, appStateEnum.RESUMED]);
 -> 0x7 (appStateEnum.LOADED, appStateEnum.STARTED, appStateEnum.RESUMED)
 
 appStateEnum.isset(appState, appStateEnum.LOADED);
@@ -50,3 +67,11 @@ ordinal = ordinalEnum.unset(ordinal, ordinalEnum.ONE);
 -> error: undefined is not a function
 
 ```
+
+Test
+----
+$ mocha
+
+License
+-------
+MIT
