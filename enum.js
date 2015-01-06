@@ -2,31 +2,91 @@ define([], function () {
 
   'use strict';
 
-  var Enum = function () {};
-
-  Enum.prototype.create = function (_elements) {
+  var Enum = function (_elements) {
 
     var elements,
       enumeration,
-      fnToString = function (value) {
+      isNumeric = Array.isArray(_elements),
+      numVal = 1;
+
+    enumeration = this;
+
+    Object.defineProperty(enumeration, 'toString', {
+      value: function (value) {
         for (var el in this) {
           if (value === this[el]) {
             return el;
           }
         }
-      };
-
-    enumeration = Object.create(Object.prototype);
-
-    Object.defineProperty(enumeration, 'toString', {
-      value: fnToString
+      }
     });
 
-    if (Array.isArray(_elements)) {
-      elements = {};
-      _elements.forEach(function (elName, index) {
-        elements[elName] = Math.pow(2, index);
+    Object.defineProperty(enumeration, 'set', {
+      value: function (elVal, _setVal) {
+
+        if (isNumeric) {
+
+          if (undefined === _setVal) {
+            _setVal = elVal;
+          }
+
+          (Array.isArray(_setVal) ? _setVal : [_setVal])
+            .forEach(function (v) {
+              elVal = undefined === elVal ? v : elVal | v;
+            });
+          return elVal;
+        }
+
+        return _setVal || elVal;
+
+      }
+    });
+
+    Object.defineProperty(enumeration, 'isset', {
+      value: function (elVal, _checkVal) {
+
+        var isset = false;
+
+        if (isNumeric) {
+          (Array.isArray(_checkVal) ? _checkVal : [_checkVal])
+            .some(function (v) {
+              if ((elVal & v) === v) {
+                return isset = true;
+              }
+            });
+        }
+        else {
+          (Array.isArray(_checkVal) ? _checkVal : [_checkVal])
+            .some(function (v) {
+              if (elVal === v) {
+                return isset = true;
+              }
+            });
+        }
+        return isset;
+      }
+    });
+
+
+    if (isNumeric) {
+
+      Object.defineProperty(enumeration, 'unset', {
+        value: function (elVal, _setVal) {
+          (Array.isArray(_setVal) ? _setVal : [_setVal])
+            .forEach(function (v) {
+              elVal &= ~v;
+            });
+          return elVal;
+        }
       });
+
+      numVal = 0x1;
+      elements = {};
+      _elements.forEach(function (elName) {
+        elements[elName] = numVal;
+        numVal = numVal << 1;
+      });
+
     }
     else {
       elements = _elements;
@@ -40,9 +100,9 @@ define([], function () {
     };
 
     (Object.freeze || Object)(enumeration);
-    return enumeration;
+
   };
 
-  return new Enum;
+  return Enum;
 
 });
