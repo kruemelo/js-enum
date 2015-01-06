@@ -3,7 +3,7 @@ js-enum
 
 javascript enumerations
 
-´´´
+```
 var Enum = require('enum.js');
 
 // numeric enum
@@ -49,4 +49,4 @@ ordinalEnum.isset(ordinal, ordinalEnum.ONE);
 ordinal = ordinalEnum.unset(ordinal, ordinalEnum.ONE);
 -> error: undefined is not a function
 
-´´´
+```
