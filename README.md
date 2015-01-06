@@ -1,0 +1,4 @@
+js-enum
+=======
+
+javascript enumerations
