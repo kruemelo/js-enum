@@ -7,9 +7,15 @@ define([], function () {
     var elements,
       enumeration,
       isNumeric = Array.isArray(_elements),
+      maxElements = isNumeric ?
+        Math.log2 && Math.log2(Number.MAX_VALUE) || Math.log(Number.MAX_VALUE) / Math.LN2 : undefined,
       numVal = 1;
 
     enumeration = this;
+
+    if (isNumeric && _elements.length > maxElements) {
+      throw new Error('EMAXNUMBEROFELEMENTSEXCEEDED');
+    }
 
     Object.defineProperty(enumeration, 'toString', {
       value: function (value) {
@@ -18,6 +24,12 @@ define([], function () {
             return el;
           }
         }
+      }
+    });
+
+    Object.defineProperty(enumeration, 'length', {
+      value: function () {
+        return _elements.length;
       }
     });
 

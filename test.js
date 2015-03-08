@@ -5,8 +5,20 @@ var util = require('util');
 var requirejs = require('requirejs');
 
 var Enum = requirejs('enum.js');
+var maxItems = Math.log2 && Math.log2(Number.MAX_VALUE) || Math.log(Number.MAX_VALUE) / Math.LN2;
+var maxItemsArray = [];
+var tooManyItemsArray = [];
 
 describe('enum', function () {
+
+  before(function () {
+    var i = 0;
+    for (; i < maxItems; ++i) {
+      maxItemsArray.push(i.toString());
+      tooManyItemsArray.push(i.toString());
+    }
+    tooManyItemsArray.push((i + 1).toString());
+  });
 
 
   it('should define an enumeration from string array', function () {
@@ -196,6 +208,46 @@ describe('enum', function () {
 
     v = enumeration.unset(v, [enumeration.ONE, enumeration.TWO]);
     assert.equal(v, enumeration.FOUR);
+
+  });
+
+  it('should have function length()', function () {
+
+    var items = ['ONE', 'TWO', 'FOUR'],
+      enumeration = new Enum(items);
+
+    assert.equal(typeof enumeration.length, 'function', 'should have a property "length" of type "function"');
+    assert.strictEqual(enumeration.length(), items.length, 'should have the same length as items');
+  });
+
+  it('should create up to Math.log2(Number.MAX_VALUE) items', function () {
+
+    var enumeration;
+
+    assert.strictEqual(maxItemsArray.length, maxItems, 'self test: max items array should have number of items ' + maxItemsArray.length + ' equal to maxItems ' + maxItems);
+
+    enumeration = enumeration = new Enum(maxItemsArray);
+
+    assert.strictEqual(enumeration.length(), maxItems, 'should have created an enum with ' + maxItems + ' items but did ' + enumeration.length() + ' only');
+  });
+
+  it('should handle too many items', function () {
+
+    var enumeration;
+
+    assert.strictEqual(
+      tooManyItemsArray.length,
+      maxItems + 1,
+      'self test: tooManyItemsArray should have number of items ' + maxItemsArray.length + ' equal to maxItems ' + (maxItems + 1)
+    );
+
+    assert.throws(function () {
+      enumeration = new Enum(tooManyItemsArray);
+    }, function (err) {
+      if ((err instanceof Error) && /EMAXNUMBEROFELEMENTSEXCEEDED/.test(err)) {
+        return true;
+      }
+    }, 'unexpected error');
 
   });
 

@@ -47,6 +47,12 @@ appStateEnum.isset(appState, [appStateEnum.STOPPED, appStateEnum.RESUMED]);
 appState = appStateEnum.unset(appState, [appStateEnum.LOADED, appStateEnum.RESUMED]);
 -> 0x2 (appStateEnum.STARTED)
 
+appStateEnum.length()
+-> 6 (number of elements in enum)
+
+Maximum number of elements supported is 1024.
+
+
 // object enum
 var ordinalEnum = new Enum({
   ONE: 'first',
