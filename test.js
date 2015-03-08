@@ -224,6 +224,7 @@ describe('enum', function () {
 
     assert.strictEqual(enumeration.length(), items.length - 1, 'should have one item less than elements in "items"-array');
     assert.strictEqual(enumeration.length(), itemsLength, 'should have the same length as itemsLength');
+    assert.strictEqual(enumeration.EIGHT, undefined);
   });
 
   it('should create up to Math.log2(Number.MAX_VALUE) items (numeric only)', function () {
