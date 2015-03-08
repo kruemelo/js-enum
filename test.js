@@ -211,7 +211,7 @@ describe('enum', function () {
 
   });
 
-  it('should have function length() (numeric only)', function () {
+  it('should have immutable function length() (numeric only)', function () {
 
     var items = ['ONE', 'TWO', 'FOUR'],
       itemsLength = items.length,
@@ -225,6 +225,22 @@ describe('enum', function () {
     assert.strictEqual(enumeration.length(), items.length - 1, 'should have one item less than elements in "items"-array');
     assert.strictEqual(enumeration.length(), itemsLength, 'should have the same length as itemsLength');
     assert.strictEqual(enumeration.EIGHT, undefined);
+
+    // change first array element value which should not be reflected in enumeration
+    items[0] = 'XONE';
+
+    assert.strictEqual(enumeration.length(), items.length - 1, 'should have one item less than elements in "items"-array');
+    assert.strictEqual(enumeration.length(), itemsLength, 'should have the same length as itemsLength');
+    assert.strictEqual(enumeration.XONE, undefined);
+    assert.strictEqual(enumeration.ONE, 1);
+
+    // remove the second and third items array elements (TWO, FOUR) which should not be reflected in enumeration
+    items.splice(1, 2);
+
+    assert.strictEqual(items.length, itemsLength - 1, 'items array length should have one item less than itemsLength now');
+    assert.strictEqual(enumeration.length(), itemsLength, 'should still not have changed length');
+    assert.strictEqual(enumeration.TWO, 2);
+
   });
 
   it('should create up to Math.log2(Number.MAX_VALUE) items (numeric only)', function () {
