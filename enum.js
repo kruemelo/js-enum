@@ -7,6 +7,7 @@ define([], function () {
     var elements,
       enumeration,
       isNumeric = Array.isArray(_elements),
+      numberOfElements,
       maxElements = isNumeric ?
         Math.log2 && Math.log2(Number.MAX_VALUE) || Math.log(Number.MAX_VALUE) / Math.LN2 : undefined,
       numVal = 1;
@@ -24,12 +25,6 @@ define([], function () {
             return el;
           }
         }
-      }
-    });
-
-    Object.defineProperty(enumeration, 'length', {
-      value: function () {
-        return _elements.length;
       }
     });
 
@@ -94,9 +89,17 @@ define([], function () {
 
       numVal = 0x1;
       elements = {};
+      numberOfElements = 0;
       _elements.forEach(function (elName) {
         elements[elName] = numVal;
         numVal = numVal << 1;
+        ++numberOfElements;
+      });
+
+      Object.defineProperty(enumeration, 'length', {
+        value: function () {
+          return numberOfElements;
+        }
       });
 
     }

@@ -211,16 +211,22 @@ describe('enum', function () {
 
   });
 
-  it('should have function length()', function () {
+  it('should have function length() (numeric only)', function () {
 
     var items = ['ONE', 'TWO', 'FOUR'],
+      itemsLength = items.length,
       enumeration = new Enum(items);
 
     assert.equal(typeof enumeration.length, 'function', 'should have a property "length" of type "function"');
-    assert.strictEqual(enumeration.length(), items.length, 'should have the same length as items');
+
+    // add one which should not be part of the enumeration
+    items.push('EIGHT');
+
+    assert.strictEqual(enumeration.length(), items.length - 1, 'should have one item less than elements in "items"-array');
+    assert.strictEqual(enumeration.length(), itemsLength, 'should have the same length as itemsLength');
   });
 
-  it('should create up to Math.log2(Number.MAX_VALUE) items', function () {
+  it('should create up to Math.log2(Number.MAX_VALUE) items (numeric only)', function () {
 
     var enumeration;
 
@@ -231,7 +237,7 @@ describe('enum', function () {
     assert.strictEqual(enumeration.length(), maxItems, 'should have created an enum with ' + maxItems + ' items but did ' + enumeration.length() + ' only');
   });
 
-  it('should handle too many items', function () {
+  it('should handle too many items (numeric only)', function () {
 
     var enumeration;
 
