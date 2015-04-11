@@ -1,4 +1,11 @@
-define([], function () {
+(function(definition) {
+    if (typeof module !== 'undefined') {
+      module.exports = definition();
+    }
+    else if (typeof define === 'function' && typeof define.amd === 'object') {
+      define(definition);
+    }
+}(function () {
 
   'use strict';
 
@@ -120,4 +127,4 @@ define([], function () {
 
   return Enum;
 
-});
+}));

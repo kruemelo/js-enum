@@ -1,7 +1,7 @@
 js-enum
 =======
 
-simple javascript enumerations, AMD module.
+simple javascript enumerations, AMD/CommonJS module.
 
 Enumerations with immutable elements.
 
